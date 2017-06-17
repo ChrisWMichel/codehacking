@@ -12,13 +12,13 @@
     <title>Admin</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/app.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
 
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/font-awesome.css" rel="stylesheet">
-    <link href="css/metisMenu.css" rel="stylesheet">
-    <link href="css/sb-admin-2.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/font-awesome.css" rel="stylesheet">
+    <link href="/css/metisMenu.css" rel="stylesheet">
+    <link href="/css/sb-admin-2.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -351,11 +351,11 @@
 <!-- /#wrapper -->
 
 <!-- jQuery -->
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/metisMenu.js"></script>
-<script src="js/sb-admin-2.js"></script>
-<script src="js/scripts.js"></script>
+<script src="/js/jquery.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/metisMenu.js"></script>
+<script src="/js/sb-admin-2.js"></script>
+<script src="/js/scripts.js"></script>
 
 
 @yield('footer')
