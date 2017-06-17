@@ -11,8 +11,14 @@
 |
 */
 
+use App\Role;
+use App\User;
+
 Route::get('/', function () {
-    return view('welcome');
+  $users = User::all();
+  $roles = Role::pluck('name', 'id')->all();
+
+    return view('admin/users.index', compact('roles', 'users'));
 });
 
 Auth::routes();
