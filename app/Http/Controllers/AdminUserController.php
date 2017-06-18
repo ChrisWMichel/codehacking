@@ -20,8 +20,12 @@ class AdminUserController extends Controller
     {
       $users = User::all();
 
+      $user = User::find(14);
+      echo '<pre>';
+      print_r($user->photo->path);
+      echo '</pre>';
 
-      return view('admin.users.index', compact('users'));
+      //return view('admin.users.index', compact('users'));
     }
 
     /**
