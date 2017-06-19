@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserEditRequest;
 use App\Http\Requests\UserRequest;
 use App\Photo;
 use App\Role;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use App\User;
@@ -20,12 +22,9 @@ class AdminUserController extends Controller
     {
       $users = User::all();
 
-      $user = User::find(14);
-      echo '<pre>';
-      print_r($user->photo->path);
-      echo '</pre>';
 
-      //return view('admin.users.index', compact('users'));
+
+      return view('admin.users.index', compact('users'));
     }
 
     /**
@@ -51,7 +50,7 @@ class AdminUserController extends Controller
       $input = $request->all();
 
 
-      if($file = $request->file('image_id')){
+      if($file = $request->file('photo_id')){
 
         $name = $file->getClientOriginalName();
 
@@ -59,7 +58,7 @@ class AdminUserController extends Controller
 
         $photo = Photo::create(['path' => $name]); // put the image path in the photo DB
 
-        $input['image_id'] = $photo->id; // put the photo id in the Users table
+        $input['photo_id'] = $photo->id; // put the photo id in the Users table
 
       }
 
@@ -90,8 +89,10 @@ class AdminUserController extends Controller
      */
     public function edit($id)
     {
+      $user = User::find($id);
+      $roles = Role::pluck('name', 'id')->all();
 
-      return view('admin.users.edit');
+      return view('admin.users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -101,9 +102,63 @@ class AdminUserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserEditRequest $request, $id)
     {
-      return redirect('admin.users.index');
+      $user = User::find($id);
+      //$user->update($request->all());
+
+      $input = $request->all();
+      $oldPhotoId = $user->photo_id;
+
+      if(trim($request->password) =='') {
+        $input = $request->except('password');
+      }
+      else {
+        $this->validate(request(), [
+          'password' => 'min:4',
+          'password_confirm' => 'required|same:password'
+        ]);
+        $input['password'] = bcrypt($request->password);
+      }
+
+      if($request->hasFile('photo_id')){
+          $file = $request->file('photo_id');
+
+          $name = time() . $file->getClientOriginalName();
+
+          $file->move('images', $name);
+
+          $photo = Photo::create(['path' => $name]); // put the image path in the photo DB
+
+          $input['photo_id'] = $photo->id; // put the photo id in the Users table
+      }
+
+
+      $user->update($input);
+
+      // check to see if an image already exist. If it does, delete it from file and DB table.
+      if($oldPhotoId >= 1) {
+
+        $oldPhoto = Photo::findOrFail($oldPhotoId);
+        $oldPath = $oldPhoto->path;
+
+        // check if current photo matches old photo, if not delete the old photo and image.
+        if ($oldPath !== $user->photo->path) {
+
+          // Delete the old image file.
+          if (file_exists($filename = public_path() . $oldPath)) {
+            unlink($filename);
+          }
+
+          // Delete the record in the Photos table
+          $oldPhoto->delete();
+
+        }
+      }
+
+      //Session::flash('updated_user', 'The user has been updated.');
+
+      return redirect('/admin/users');
     }
 
     /**

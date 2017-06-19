@@ -23,12 +23,11 @@
         <tr>
             <td>{{$user->id}}</td>
             @if($user->photo)
-                <td> <img height="100" src="{{$user->photo->path}}"></td>
+                <td> <img height="50" src="{{$user->photo->path}}"></td>
             @else
                 <td>no image</td>
             @endif
-           {{-- <td><?php echo isset($user->photo) ? "<img src='$user->photo->path'>" : 'No User Photo' ?></td>--}}
-            <td>{{$user->name}}</td>
+            <td><a href="{{route('users.edit', $user->id)}}">{{$user->name}}</a></td>
             <td>{{$user->email}}</td>
             <td>{{$user->role->name}}</td>
             <td>{{$user->status == 1 ? 'yes' : 'no'}}</td>

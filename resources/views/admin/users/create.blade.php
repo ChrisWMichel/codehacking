@@ -40,7 +40,7 @@
         </div>
 
         <div class="form-group">
-            {!! Form::file('image_id') !!}
+            {!! Form::file('photo_id') !!}
         </div>
 
         <div class="form-group">
