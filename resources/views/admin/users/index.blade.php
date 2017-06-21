@@ -3,6 +3,15 @@
 
 @section('content')
 
+    {{--@if(\Illuminate\Support\Facades\Session::has('deleted_user'))
+
+        <h3 class="bg-primary center-block">{{session('deleted_user')}}</h3>
+
+    @endif--}}
+    <div class="alert">
+       <h3> @include('flash::message')</h3>
+    </div>
+
     <h1>Users</h1>
 
     <table class="table table-striped table-hover">
@@ -38,5 +47,7 @@
 
         </tbody>
     </table>
+
+
 
 @endsection

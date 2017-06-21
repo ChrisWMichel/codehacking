@@ -28,22 +28,22 @@
 
             <div class="form-group">
                 {!! Form::label('name', 'Name:') !!}<br>
-                {!! Form::text('name', $user->name) !!}
+                {!! Form::text('name', $user->name, ['class' => 'form-control']) !!}
             </div>
 
             <div class="form-group">
                 {!! Form::label('email', 'Email:') !!}<br>
-                {!! Form::email('email', $user->email) !!}
+                {!! Form::email('email', $user->email, ['class' => 'form-control']) !!}
             </div>
 
             <div class="form-group">
                 {!! Form::label('password', 'Password:') !!}<br>
-                {!! Form::password('password', NULL) !!}
+                {!! Form::password('password', ['class' => 'form-control']) !!}
             </div>
 
             <div class="form-group">
                 {!! Form::label('password_confirm', 'Password Confirm:') !!}<br>
-                {!! Form::password('password_confirm') !!}
+                {!! Form::password('password_confirm', ['class' => 'form-control']) !!}
             </div>
 
             <div class="form-group">
@@ -54,6 +54,14 @@
             <div class="form-group">
                 {!! Form::submit('Update User', ['class' => 'btn btn-primary col-sm-6']) !!}
             </div>
+
+        {!! Form::close() !!}
+
+        {!! Form::open(['method'=>'DELETE', 'action'=>['AdminUserController@destroy', $user->id], 'class' => ' pull-right']) !!}
+
+        <div class="form-group">
+            {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+        </div>
 
         {!! Form::close() !!}
 

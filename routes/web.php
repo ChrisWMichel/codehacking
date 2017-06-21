@@ -11,26 +11,27 @@
 |
 */
 
-use App\Role;
-use App\User;
-
-Route::get('/', function () {
-  $users = User::all();
-  //$roles = Role::pluck('name', 'id')->all();
-
-  /*echo '<pre>';
-  print_r($roles);
-  echo '</pre>';*/
-
-    return view('admin.users.index', compact( 'users'));
-});
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('admin', function (){
-  return view('admin.index');
+Route::get('/', function () {
+
+    return view('welcome');
 });
 
-Route::resource('admin/users', 'AdminUserController');
+Route::get('/admin', function(){
+
+  return view('admin.index');
+
+});
+
+Route::group(['middleware' => 'admin'], function (){
+
+  Route::resource('admin/users', 'AdminUserController');
+
+  Route::resource('admin/posts', 'AdminPostsController');
+
+});
+

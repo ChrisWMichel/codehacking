@@ -6,7 +6,7 @@ use App\Http\Requests\UserEditRequest;
 use App\Http\Requests\UserRequest;
 use App\Photo;
 use App\Role;
-use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use App\User;
@@ -65,6 +65,8 @@ class AdminUserController extends Controller
       $input['password'] = bcrypt( $request->password);
 
       User::create($input);
+
+      flash('The user has been created.')->success();
 
       return redirect('/admin/users');
     }
@@ -156,7 +158,8 @@ class AdminUserController extends Controller
         }
       }
 
-      //Session::flash('updated_user', 'The user has been updated.');
+
+      flash('The user has been updated.')->success();
 
       return redirect('/admin/users');
     }
@@ -169,7 +172,38 @@ class AdminUserController extends Controller
      */
     public function destroy($id)
     {
-      return redirect('admin.users.index');
+      $user = User::findOrFail($id);
+      $oldPhotoId = $user->photo_id;
+
+      // check to see if an image already exist. If it does, delete it from file and DB table.
+      if($oldPhotoId >= 1) {
+
+        $oldPhoto = Photo::findOrFail($oldPhotoId);
+
+        $oldPath = $oldPhoto->path;
+
+        // check if current photo matches old photo, if not delete the old photo and image.
+        if ($oldPath == $user->photo->path) {
+
+          // Delete the old image file.
+          if (file_exists($filename = public_path() . $oldPath)) {
+            unlink($filename);
+          }
+
+          // Delete the record in the Photos table
+          $oldPhoto->delete();
+
+        }
+      }
+
+      $user->delete();
+
+      //Session::flash('deleted_user', 'The user has been deleted.');
+      //flash('The user has been deleted.');
+      flash('The user has been deleted.')->success();
+
+
+      return redirect('/admin/users');
     }
 }
 /*echo '<pre>';
