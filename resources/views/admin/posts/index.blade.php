@@ -13,6 +13,8 @@
             <th>Category</th>
             <th>Title</th>
             <th>Body</th>
+            <th>Created</th>
+            <th>Updated</th>
         </tr>
         </thead>
         <tbody>
@@ -27,7 +29,9 @@
             <td><a href="{{route('posts.edit', $post->id)}}">{{$post->user->name}}</a></td>
             <td>{{$post->category->name}}</td>
             <td>{{$post->title}}</td>
-            <td>{{\Illuminate\Support\Str::limit($post->body, $limt = 30, $end = '...')}}</td>
+            <td>{{str_limit($post->body, 40)}}</td>
+            <td>{{$post->created_at->toFormattedDateString()}}</td>
+            <td>{{$post->updated_at->diffForHumans()}}</td>
         </tr>
        @endforeach
         </tbody>

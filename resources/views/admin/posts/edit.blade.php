@@ -3,8 +3,17 @@
 @section('content')
 
     <h1>Edit Posts</h1>
-    <img height="100" src="{{$post->photo ? $post->photo->path : 'http://placehold.it/200x200'}}" class="img-responsive img-rounded">
-<br><br>
+
+    <div class="alert">
+        <h3> @include('flash::message')</h3>
+    </div>
+
+    @include('layouts.errorList')
+
+    <div class="col-sm-3">
+        <img height="100" src="{{$post->photo ? $post->photo->path : 'http://placehold.it/200x200'}}" class="img-responsive img-rounded">
+    </div>
+    <div class="col-sm-9">
     {!! Form::model($post, ['method'=>'Patch', 'action'=>['AdminPostsController@update', $post->id], 'files'=>TRUE]) !!}
 
         <div class="form-group">
@@ -24,13 +33,18 @@
 
         <div class="form-group">
             {!! Form::label('photo_id', 'Add Photo:') !!}
-            {!! Form::file('photo_id', NULL) !!}
+            {!! Form::file('photo_id', NULL, ['class'=>'form-control']) !!}
         </div>
 
         <div class="form-group">
-            {!! Form::submit('Update', ['class' => 'btn btn-info']) !!}
+            {!! Form::submit('Update', ['class' => 'btn btn-info col-sm-6']) !!}
         </div>
 
-    {!! Form::close() !!}
+        {!! Form::close() !!}
 
+        {!! Form::open(['method'=>'DELETE', 'action'=>['AdminPostsController@destroy', $post->id]]) !!}
+
+            {!! Form::submit('Delete', ['class' => 'btn btn-danger col-sm-6' ]) !!}
+        {!! Form::close() !!}
+    </div>
 @endsection

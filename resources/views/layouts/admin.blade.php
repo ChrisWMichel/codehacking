@@ -124,6 +124,7 @@
                     <li>
                         <a href="/admin"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                     </li>
+                    @if(\Illuminate\Support\Facades\Auth::user()->isAdmin())
 
                     <li>
                         <a href="#"><i class="fa fa-wrench fa-fw"></i>Users<span class="fa arrow"></span></a>
@@ -139,6 +140,7 @@
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
+                    @endif
 
                     <li>
                         <a href="#"><i class="fa fa-wrench fa-fw"></i> Posts<span class="fa arrow"></span></a>
@@ -160,11 +162,11 @@
                         <a href="#"><i class="fa fa-wrench fa-fw"></i>Categories<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/categories">All Categories</a>
+                                <a href="{{route('categories.index')}}">All Categories</a>
                             </li>
 
                             <li>
-                                <a href="/categories/create">Create Category</a>
+                               {{-- <a href="{{route('categories.create')}}">Create Category</a>--}}
                             </li>
 
                         </ul>

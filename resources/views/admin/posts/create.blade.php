@@ -4,6 +4,12 @@
 
     <h1>Create Posts</h1>
 
+        @include('layouts.errorList')
+
+    <div class="alert">
+        <h3> @include('flash::message')</h3>
+    </div>
+
     {!! Form::open(['method'=>'POST', 'action'=>'AdminPostsController@store',  'files'=>true]) !!}
     {{csrf_field()}}
 

@@ -47,4 +47,13 @@ class User extends Authenticatable
 
       return false;
     }
+
+  Public function isAuthor(){
+
+    if(($this->role->name == 'administrator' || $this->role->name == 'author') && $this->status == 1){
+      return true;
+    }
+
+    return false;
+  }
 }

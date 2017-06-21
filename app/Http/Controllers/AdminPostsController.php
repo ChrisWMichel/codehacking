@@ -62,11 +62,13 @@ class AdminPostsController extends Controller
 
       }
 
-      $input['user_id'] = $user->id;
+      // This works.
+      /*$input['user_id'] = $user->id;
+      Post::create($input);*/
 
-      Post::create($input);
+      $user->posts()->create($input);
 
-      return redirect('admin.posts');
+      return redirect('admin/posts');
     }
 
     /**
@@ -102,17 +104,16 @@ class AdminPostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CreatePostRequest $request, $id)
     {
-      $post = Post::find($id);
-      //$user->update($request->all());
+      $post = Post::find($id); // need this for photo id
 
       $input = $request->all();
       $oldPhotoId = $post->photo_id;
 
       if($request->hasFile('photo_id')){
         $file = $request->file('photo_id');
-        //print_r($file); exit;
+
         $name = $file->getClientOriginalName();
         //$name = 'posts/' . $name;
 
@@ -124,8 +125,6 @@ class AdminPostsController extends Controller
       }
 
 
-      $post->update($input);
-
       // check to see if an image already exist. If it does, delete it from file and DB table.
       if($oldPhotoId >= 1) {
 
@@ -133,7 +132,7 @@ class AdminPostsController extends Controller
         $oldPath = $oldPhoto->path;
 
         // check if current photo matches old photo, if not delete the old photo and image.
-        if ($oldPath !== $post->photo->path) {
+        if ($oldPath == $post->photo->path) {
 
           // Delete the old image file.
           if (file_exists($filename = public_path() . $oldPath)) {
@@ -146,6 +145,8 @@ class AdminPostsController extends Controller
         }
       }
 
+      //$post->update($input);
+      Auth::user()->posts()->whereId($id)->first()->update($input);
 
       flash('Post has been updated.')->success();
 
@@ -160,8 +161,40 @@ class AdminPostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $post = Post::findOrFail($id);
+      $oldPhotoId = $post->photo_id;
+
+      // check to see if an image already exist. If it does, delete it from file and DB table.
+      if($oldPhotoId >= 1) {
+
+        $oldPhoto = Photo::findOrFail($oldPhotoId);
+
+        $oldPath = $oldPhoto->path;
+
+        // check if current photo matches old photo, if not delete the old photo and image.
+        if ($oldPath == $post->photo->path) {
+
+          // Delete the old image file.
+          if (file_exists($filename = public_path() . $oldPath)) {
+            unlink($filename);
+          }
+
+          // Delete the record in the Photos table
+          $oldPhoto->delete();
+
+        }
+      }
+
+      $post->delete();
+
+      //Session::flash('deleted_user', 'The user has been deleted.');
+      //flash('The user has been deleted.');
+      flash('The post has been deleted.')->success();
+
+
+      return redirect('/admin/posts');
     }
+
 }
 /*echo '<pre>';
 print_r($name);

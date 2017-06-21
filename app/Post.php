@@ -20,4 +20,6 @@ class Post extends Model
       return $this->belongsTo(Photo::class);
     }
 
+
+
 }
