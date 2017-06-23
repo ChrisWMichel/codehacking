@@ -13,6 +13,8 @@
             <th>Category</th>
             <th>Title</th>
             <th>Body</th>
+            <th>Posts</th>
+            <th>comments</th>
             <th>Created</th>
             <th>Updated</th>
         </tr>
@@ -30,6 +32,8 @@
             <td>{{$post->category->name}}</td>
             <td>{{$post->title}}</td>
             <td>{{str_limit($post->body, 40)}}</td>
+            <td><a href="{{route('home.post', $post->id)}}">View Post</a> </td>
+            <td><a href="{{route('comments.show', $post->id)}}">View Comments</a> </td>
             <td>{{$post->created_at->toFormattedDateString()}}</td>
             <td>{{$post->updated_at->diffForHumans()}}</td>
         </tr>

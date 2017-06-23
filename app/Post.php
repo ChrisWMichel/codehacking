@@ -20,6 +20,13 @@ class Post extends Model
       return $this->belongsTo(Photo::class);
     }
 
+    /*public function comments(){
+      return $this->belongsToMany(Comment::class);
+    }*/
+  public function comments(){
+    return $this->hasMany(Comment::class);
+  }
+
 
 
 }
