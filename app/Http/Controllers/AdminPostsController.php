@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Comment;
 use App\Photo;
 use App\Post;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreatePostRequest;
 use Illuminate\Support\Facades\Auth;
+
+
 
 class AdminPostsController extends Controller
 {
@@ -19,7 +22,7 @@ class AdminPostsController extends Controller
      */
     public function index()
     {
-      $posts = Post::all();
+      $posts = Post::paginate(5);
 
       return view('admin.posts.index', compact('posts'));
     }
@@ -106,6 +109,7 @@ class AdminPostsController extends Controller
      */
     public function update(CreatePostRequest $request, $id)
     {
+
       $post = Post::find($id); // need this for photo id
 
       $input = $request->all();
@@ -122,7 +126,7 @@ class AdminPostsController extends Controller
         $photo = Photo::create(['path' => $name]); // put the image path in the photo DB
 
         $input['photo_id'] = $photo->id; // put the photo id in the Users table
-      }
+
 
 
       // check to see if an image already exist. If it does, delete it from file and DB table.
@@ -144,7 +148,7 @@ class AdminPostsController extends Controller
 
         }
       }
-
+      }
       //$post->update($input);
       Auth::user()->posts()->whereId($id)->first()->update($input);
 
@@ -195,11 +199,12 @@ class AdminPostsController extends Controller
       return redirect('/admin/posts');
     }
 
-    public function post($id){
+    public function post($slug){
 
-      $post = Post::findOrFail($id);
+      $post = Post::findBySlug($slug);
 
-      $comments = $post->comments()->whereIsActive(1)->get();
+      //$comments = $post->comments()->whereIsActive(1)->get();
+      $comments = Comment::find($post->id)->get();
 
       return view('post', compact( 'comments', 'post'));
     }

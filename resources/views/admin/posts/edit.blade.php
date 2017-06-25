@@ -8,6 +8,7 @@
         <h3> @include('flash::message')</h3>
     </div>
 
+    @include('includes.tinyeditor')
     @include('layouts.errorList')
 
     <div class="col-sm-3">
@@ -28,12 +29,12 @@
 
         <div class="form-group">
             {!! Form::label('body', 'Body:') !!}<br>
-            {!! Form::textarea('body', $post->body) !!}
+            {!! Form::textarea('body', $post->body, ['class'=>'form-control']) !!}
         </div>
 
         <div class="form-group">
             {!! Form::label('photo_id', 'Add Photo:') !!}
-            {!! Form::file('photo_id', NULL, ['class'=>'form-control']) !!}
+            {!! Form::file('photo_id', ['class'=>'form-control']) !!}
         </div>
 
         <div class="form-group">

@@ -3,10 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 
 class Post extends Model
 {
-    protected $guarded = [];
+  use Sluggable;
+  use SluggableScopeHelpers;
+
+  protected $guarded = [];
+  protected $primaryKey = 'id';
 
     public function user(){
       return $this->belongsTo(User::class);
@@ -27,6 +33,19 @@ class Post extends Model
     return $this->hasMany(Comment::class);
   }
 
+  public function sluggable()
+  {
+    return [
+      'slug' => [
+        'source' => 'title',
+        'separator' => '-',
+        'includeTrashed' => true,
+      ]
+    ];
+  }
 
+  public function photoPlaceholder(){
+    return "http://placehold.it/700x200";
+  }
 
 }

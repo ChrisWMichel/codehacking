@@ -4,6 +4,7 @@
 
     <h1>Create Posts</h1>
 
+        @include('includes.tinyeditor')
         @include('layouts.errorList')
 
     <div class="alert">
@@ -20,12 +21,12 @@
 
         <div class="form-group">
             {!! Form::label('title', 'Title:') !!}<br>
-            {!! Form::text('title', NULL) !!}
+            {!! Form::text('title', NULL, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
             {!! Form::label('body', 'Content:') !!}<br>
-            {!! Form::textarea('body', NULL) !!}
+            {!! Form::textarea('body', NULL, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">

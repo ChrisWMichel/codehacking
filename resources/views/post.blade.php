@@ -23,12 +23,12 @@
     </div>
 
     <!-- Preview Image -->
-    <img class="img-responsive" src="{{$post->photo->path}}" alt="">
+    <img class="img-responsive" src="{{$post->photo ? $post->photo->path : $post->photoPlaceholder()}}" alt="">
 
     <hr>
 
     <!-- Post Content -->
-    <p class="lead">{{$post->body}}
+    <p class="lead">{!! $post->body !!}</p>
     <hr>
 
     <!-- Blog Comments -->
